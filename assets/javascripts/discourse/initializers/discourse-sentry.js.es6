@@ -4,8 +4,8 @@ export default {
   name: "discourse-sentry",
 
   initialize() {
-    withPluginApi("0.8.24", () => {
-      const src = "https://browser.sentry-cdn.com/4.5.4/bundle.min.js";
+    withPluginApi("0.8.36", (api) => {
+      const src = "https://browser.sentry-cdn.com/5.10.2/bundle.min.js";
       const enabled = Discourse.SiteSettings.discourse_sentry_enabled;
       const dsn = Discourse.SiteSettings.discourse_sentry_dsn;
 
@@ -20,7 +20,7 @@ export default {
           dsn
         });
 
-        const currentUser = Discourse.User.current();
+        const currentUser = api.getCurrentUser();
 
         if (currentUser) {
           const { id, username } = currentUser;
