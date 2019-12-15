@@ -4,7 +4,7 @@
 # authors: debtcollective
 # url: https://github.com/debtcollective/discourse-sentry
 
-gem "sentry-raven"
+gem "sentry-raven", "2.12.3"
 
 enabled_site_setting :discourse_sentry_enabled
 
