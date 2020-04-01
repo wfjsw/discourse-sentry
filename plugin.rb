@@ -1,16 +1,43 @@
 # name: discourse-sentry
 # about: Discourse plugin to integrate Sentry (sentry.io)
-# version: 1.1
+# version: 1.2
 # authors: debtcollective
 # url: https://github.com/debtcollective/discourse-sentry
 
-gem "sentry-raven", "2.12.3"
+gem "sentry-raven", "3.0.0"
 
 enabled_site_setting :discourse_sentry_enabled
 
 extend_content_security_policy(
-  script_src: ['https://browser.sentry-cdn.com/5.10.2/bundle.min.js']
+  script_src: ['https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js'],
+  frame_src: ['https:'],
 )
+
+register_html_builder('server:before-head-close') do
+  "
+  <script src=\"https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js\" integrity=\"sha256-shqrWEbPEYatobCCd/wm2KkluLW1t9nCu47ELd2Ov4E=\" crossorigin=\"anonymous\"></script>
+  <script>
+    const enabled = Discourse.SiteSettings.discourse_sentry_enabled;
+    const dsn = Discourse.SiteSettings.discourse_sentry_dsn;
+
+    if (enabled && dsn) {
+      window.Sentry.init({
+        dsn
+      });
+
+      const currentUser = api.getCurrentUser();
+
+      if (currentUser) {
+        const { id, username } = currentUser;
+
+        window.Sentry.configureScope(scope => {
+          scope.setUser({ id, username });
+        });
+      }
+    }
+  </script>
+  "
+end
 
 PLUGIN_NAME ||= "DiscourseSentry".freeze
 
