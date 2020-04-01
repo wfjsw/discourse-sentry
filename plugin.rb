@@ -10,33 +10,10 @@ enabled_site_setting :discourse_sentry_enabled
 
 extend_content_security_policy(
   script_src: ['https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js'],
-  frame_src: ['https:'],
 )
 
 register_html_builder('server:before-head-close') do
-  "
-  <script src=\"https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js\" integrity=\"sha256-shqrWEbPEYatobCCd/wm2KkluLW1t9nCu47ELd2Ov4E=\" crossorigin=\"anonymous\"></script>
-  <script>
-    const enabled = Discourse.SiteSettings.discourse_sentry_enabled;
-    const dsn = Discourse.SiteSettings.discourse_sentry_dsn;
-
-    if (enabled && dsn) {
-      window.Sentry.init({
-        dsn
-      });
-
-      const currentUser = api.getCurrentUser();
-
-      if (currentUser) {
-        const { id, username } = currentUser;
-
-        window.Sentry.configureScope(scope => {
-          scope.setUser({ id, username });
-        });
-      }
-    }
-  </script>
-  "
+  '<script src="https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js" integrity="sha256-86s3lk2js5wJqBQvyGApEXNTL2smDMvMYLRmswvdHYI=" crossorigin="anonymous"></script>'
 end
 
 PLUGIN_NAME ||= "DiscourseSentry".freeze
