@@ -9,11 +9,11 @@ gem "sentry-raven", "3.0.0"
 enabled_site_setting :discourse_sentry_enabled
 
 extend_content_security_policy(
-  script_src: ['https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js'],
+  script_src: ['https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.5/build/bundle.min.js'],
 )
 
 register_html_builder('server:before-head-close') do
-  '<script src="https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.4/build/bundle.min.js" integrity="sha256-86s3lk2js5wJqBQvyGApEXNTL2smDMvMYLRmswvdHYI=" crossorigin="anonymous"></script>'
+  '<script src="https://cdn.jsdelivr.net/npm/@sentry/browser@5.15.5/build/bundle.min.js" integrity="sha256-HulFNzCLlprj4/4HX5YOieWBf8V/lGT9ZrZaEkRIxmo=" crossorigin="anonymous"></script>'
 end
 
 PLUGIN_NAME ||= "DiscourseSentry".freeze
